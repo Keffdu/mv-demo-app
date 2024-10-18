@@ -1,12 +1,13 @@
 import { Tabs } from 'expo-router';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6'
 
 
 export default function TabLayout() {
     return (
 <Tabs
   screenOptions={{
-    tabBarActiveTintColor: '#279FD0',
+    tabBarActiveTintColor: '#00796B',
     headerStyle: {
       backgroundColor: '#25292e',
     },
@@ -20,9 +21,9 @@ export default function TabLayout() {
     <Tabs.Screen
             name="index"
             options={{
-            title: 'Scoring',
+            title: 'Browse',
             tabBarIcon: ({ color, focused }) => (
-                <MaterialCommunityIcons name={focused ? 'scoreboard' : 'scoreboard-outline'} color={color} size={24} />
+                <FontAwesome6 name="binoculars" size={24} color={color} />
         ),
             }}
         />
