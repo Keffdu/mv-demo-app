@@ -8,7 +8,6 @@ import {
     Image,
     Pressable } from 'react-native';
 import { useState } from 'react';
-import AdditionalInfo from './AdditionalInfo';
 import AdditionalBirdInfo from './AdditionalBirdInfo';
 
 
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
     },
     item: {
         width: 350,
-        height: 500,
+        height: 300,
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,

@@ -6,19 +6,8 @@ import {
   FlatList,
   TextInput } from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-import * as ImagePicker from 'expo-image-picker';
 import { useState, useRef, useEffect } from 'react';
 import { GestureHandlerRootView } from "react-native-gesture-handler"
-import Button from '@/components/Button';
-import ImageViewer from '@/components/ImageViewer';
-import IconButton from '@/components/IconButton';
-import CircleButton from '@/components/CircleButton';
-import EmojiPicker from '@/components/AdditionalBirdInfo';
-import EmojiList from '@/components/EmojiList';
-import EmojiSticker from '@/components/AdditionalBirdInfo';
-import * as MediaLibrary from 'expo-media-library'
-import { captureRef } from 'react-native-view-shot';
-import domtoimage from 'dom-to-image'
 import { StatusBar } from 'expo-status-bar';
 import Item from '@/components/Item';
 import Loading from '@/components/Loading'
@@ -28,15 +17,21 @@ export default function Index() {
   const [selectedId, setSelectedId] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<any>([]);
-  const [status, requestPermission] = MediaLibrary.usePermissions();
-  const [text, onChangeText] = useState<string>();
+  const [text, onChangeText] = useState<string>('');
+  const [page, setPage] = useState<number>(1)
   
 
-  const getBirdRecordings = async () => {
+  const getBirdRecordings = async (text) => {
     try {
-      const response = await fetch('https://xeno-canto.org/api/2/recordings?query=bearded+bellbird+q:A');
+      if (text) {
+      const response = await fetch(`https://xeno-canto.org/api/2/recordings?query=${text}`);
       const data = await response.json();
-      setData(data.recordings);
+      setData(data.recordings)
+    } else {
+      const response = await fetch('https://xeno-canto.org/api/2/recordings?query=mystery');
+      const data = await response.json();
+      setData(data.recordings)
+    }
     } catch (error) {
       console.error(error);
     } finally {
@@ -46,31 +41,9 @@ export default function Index() {
 
   useEffect(() => {
     getBirdRecordings();
-  }, []);
+  }, [page]);
   
-  console.log(data[0])
-
-  const imageRef = useRef<View>(null)
-
-
-  if (status === null) {
-    requestPermission();
-  }
-
-  const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
-      setShowAppOptions(true);
-    } else {
-      alert('You did not select any image.');
-    }
-  };
+  console.log(data)
 
   const onReset = () => {
     setShowAppOptions(false);
@@ -80,39 +53,15 @@ export default function Index() {
     setIsModalVisible(true);
   };
 
-  const onSaveImageAsync = async () => {
-    if (Platform.OS !== 'web') {
-    try {
-      const localUri = await captureRef(imageRef, {
-        height: 440,
-        quality: 1,
-      });
+  const handleSearch = (text) => {
+    getBirdRecordings(text)
+    setLoading(true)
 
-      await MediaLibrary.saveToLibraryAsync(localUri);
-      if (localUri) {
-        alert('Saved!');
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  } else {
-    try {
-      const dataUrl = await domtoimage.toJpeg(imageRef.current, {
-        quality: 0.95,
-        width: 320,
-        height: 440,
-      });
-
-      let link = document.createElement('a');
-      link.download = 'sticker-smash.jpeg';
-      link.href = dataUrl;
-      link.click();
-    } catch (e) {
-      console.log(e);
-    }
   }
-  };
 
+  const handleLoadMore = () => {
+    setPage(page + 1)
+  }
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? '#00796B' : '#969492';
@@ -130,8 +79,19 @@ export default function Index() {
   if (isLoading) {
     return (
       <SafeAreaProvider>
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.loading}>
           <Loading />
+        </ SafeAreaView>
+      </ SafeAreaProvider>
+  )}
+
+
+// TODO: CREATE VIEW FOR NO SEARCH RESULTS
+  if (data.length === 0) {
+    return (
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.loading}>
+          <Text>Sorry!</Text>
         </ SafeAreaView>
       </ SafeAreaProvider>
   )}
@@ -144,6 +104,7 @@ export default function Index() {
             <TextInput
               style={styles.input}
               onChangeText={onChangeText}
+              onSubmitEditing={() => handleSearch(text)}
               value={text}
               placeholder='eg. Name, Genus'
             />
@@ -151,8 +112,9 @@ export default function Index() {
               <FlatList
                 data={data}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}
-                initialNumToRender={5}
+                keyExtractor={(item) => item.id}
+                onEndReached={handleLoadMore}
+                onEndReachedThreshold={0.5}
               />
             </View>
             {/* <View ref={imageRef} collapsable={false} >
@@ -191,6 +153,14 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
     width: '100%',
   },
+  loading: {
+    flex: 1,
+    backgroundColor: '#25292e',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    marginTop: StatusBar.currentHeight || 0,
+    width: '100%',
+  },
   title: {
     fontSize: 32,
   },
@@ -203,10 +173,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#969492',
     borderRadius: 6,
   },
-  loading: {
-    color: 'white',
-    fontSize: 22,
-},
   dataContainer: {
     flex: 1,
     width: '100%',

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button, Pressable, Text } from 'react-native';
 import { Audio } from 'expo-av';
 
 type Props = {
@@ -7,17 +7,26 @@ type Props = {
 }
 
 export default function AudioPlayer({ item }: Props) {
-    const [sound, setSound] = useState();
+    const [sound, setSound] = useState<any>();
+    const [isPlaying, setIsPlaying] = useState<boolean>(false)
 
-    async function playSound() {
-      console.log('Loading Sound');
+    async function handleSound() {
       const { sound } = await Audio.Sound.createAsync({
         uri: item.file
       });
       setSound(sound);
-  
-      console.log('Playing Sound');
-      await sound.playAsync();
+      switch (isPlaying) {
+        case true: {
+          setIsPlaying(false)
+          await sound.pauseAsync();
+        }
+        break;
+        case false: {
+          setIsPlaying(true)
+          await sound.playAsync();
+        }
+        break;
+      }
     }
   
     useEffect(() => {
@@ -30,17 +39,43 @@ export default function AudioPlayer({ item }: Props) {
     }, [sound]);
   
     return (
-      <View style={styles.container}>
-        <Button title="Play Sound" onPress={playSound} />
-      </View>
-    );
-  }
+    <Pressable style={styles.button} onPress={handleSound}>
+      <Text style={styles.text}>{isPlaying ? "Pause Sound" : "Play Sound"}</Text>
+    </Pressable>
+);
+}
+
+const styles = StyleSheet.create({
+button: {
+  width: "50%",
+  alignItems: 'center',
+  justifyContent: 'center',
+  paddingVertical: 12,
+  paddingHorizontal: 32,
+  borderRadius: 4,
+  elevation: 3,
+  backgroundColor: '#00796B',
+},
+text: {
+  fontSize: 16,
+  lineHeight: 21,
+  fontWeight: 'bold',
+  letterSpacing: 0.25,
+  color: 'black',
+},
+});
+
+  //   return (
+  //     <View style={styles.container}>
+  //       <Button color="#00796B" style={{ backgroundColor: 'yellow' }} title="Play Sound" onPress={playSound} />
+  //     </View>
+  //   );
+  // }
   
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      backgroundColor: '#ecf0f1',
-      padding: 10,
-    },
-  });
+  // const styles = StyleSheet.create({
+  //   container: {
+  //     flex: 1 / 20,
+  //     justifyContent: 'center',
+  //     padding: 10,
+  //   },
+  // });

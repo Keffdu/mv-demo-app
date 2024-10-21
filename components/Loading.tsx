@@ -10,14 +10,14 @@ import { View, Text, ActivityIndicator, StyleSheet, Image, ImageBackground } fro
 export default function Loading() {
   return (
         <ImageBackground source={require('../assets/dove.png')} resizeMode="contain" style={styles.image}>
-
-        {/* Loading Text */}
-        <View style={styles.image} >
+        <View style={styles.header} >
           <Text style={styles.title}>Bird Audio App</Text>
           <Text style={styles.subtitle}>Getting bird songs...</Text>
         </View>
         {/* Spinner */}
-        <ActivityIndicator size="large" color="#00BFFF" style={styles.spinner} />
+        <View style={styles.spinner} >
+          <ActivityIndicator size="large" color="#00796B" style={styles.spinner} />
+        </View>
         </ImageBackground>
   );
 };
@@ -27,6 +27,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  header: {
     width: '100%',
     flex: 1,
     justifyContent: 'center',
@@ -49,9 +55,12 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 18,
     color: '#00796B',
-    marginBottom: 20,
+    marginBottom: 100,
   },
   spinner: {
-    marginTop: 20,
+    flex: 1,
+    marginTop: 5,
+    marginBottom: 175,
+    height: 50,
   },
 });

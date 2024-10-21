@@ -1,5 +1,4 @@
 import { Modal, View, Text, Pressable, StyleSheet, Image } from 'react-native';
-import MapView from 'react-native-maps';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
@@ -24,14 +23,11 @@ export default function AdditionalBirdInfo({ isVisible, onClose, item}: Props) {
               <MaterialIcons name="close" color="black" size={22} />
             </Pressable>
           </View>
-          <Text style={styles.subTitle}>{item.gen}</Text>
+          <Text style={styles.subTitle}>{item.gen + " " + item.sp}</Text>
         </View>
       <View style={styles.extraDetails}>
         <Text style={styles.details} >Country: {item.cnt}</Text>
         <AudioPlayer item={item}/>
-      <View style={styles.container}>
-        <MapView style={styles.map} />
-      </View>
       </View>
       </View>
     </Modal>
@@ -90,15 +86,19 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
     paddingTop: 30,
-    color: '#fff',
+    color: 'black',
     fontSize: 28,
   },
   subTitle: {
     fontStyle: 'italic',
-    color: '#fff',
+    color: 'black',
     fontSize: 16,
   },
   extraDetails: {
-    height: '15%',
+    display: 'flex',
+    flex: 1,
+    paddingBottom: 30,
+    justifyContent: 'space-between',
+    alignItems: 'center',
   }
 });
