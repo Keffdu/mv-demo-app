@@ -1,11 +1,6 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Image, ImageBackground } from 'react-native';
 
-  // const image = {uri:
-  //   "https://img.freepik.com/premium-vector/road-runner-icon-clipart-avatar-logotype-isolated-vector-illustration_955346-949.jpg"
-  // }
-
-
 
 export default function Loading() {
   return (
@@ -14,7 +9,6 @@ export default function Loading() {
           <Text style={styles.title}>Bird Audio App</Text>
           <Text style={styles.subtitle}>Getting bird songs...</Text>
         </View>
-        {/* Spinner */}
         <View style={styles.spinner} >
           <ActivityIndicator size="large" color="#00796B" style={styles.spinner} />
         </View>

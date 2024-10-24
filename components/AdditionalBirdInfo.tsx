@@ -1,7 +1,6 @@
-import { Modal, View, Text, Pressable, StyleSheet, Image } from 'react-native';
+import { Modal, View, Text, Pressable, StyleSheet} from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
 import AudioPlayer from './AudioPlayer';
 
 type Props = {
@@ -26,7 +25,20 @@ export default function AdditionalBirdInfo({ isVisible, onClose, item}: Props) {
           <Text style={styles.subTitle}>{item.gen + " " + item.sp}</Text>
         </View>
       <View style={styles.extraDetails}>
-        <Text style={styles.details} >Country: {item.cnt}</Text>
+        <Text style={styles.detailTitle} >Location:</Text>
+        <Text style={styles.detailText} >{item.loc}</Text>
+        <Text style={styles.detailTitle} >Country:</Text>
+        <Text style={styles.detailText} >{item.cnt}</Text>
+        <Text style={styles.detailTitle} >Recording Method:</Text>
+        <Text style={styles.detailText} >{item.method}</Text>
+        <Text style={styles.detailTitle} >Type:</Text>
+        <Text style={styles.detailText} >{item.type}</Text>
+        <Text style={styles.detailTitle} >Sound Length:</Text>
+        <Text style={styles.detailText} >{item.length}</Text>
+        <Text style={styles.detailTitle} >Sex:</Text>
+        <Text style={styles.detailText} >{item.sex ? item.sex : 'N/A'}</Text>
+      </View>
+      <View style={styles.audio} >
         <AudioPlayer item={item}/>
       </View>
       </View>
@@ -37,6 +49,12 @@ export default function AdditionalBirdInfo({ isVisible, onClose, item}: Props) {
 }
 
 const styles = StyleSheet.create({
+  audio: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
   image: {
     width: 25,
     height: 25,
@@ -44,9 +62,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  details: {
+  detailTitle: {
       color: 'black',
-      fontSize: 32,
+      fontSize: 22,
+      paddingLeft: 20,
+      paddingTop: 10,
+      fontStyle: 'italic'
+  },
+  detailText: {
+      paddingLeft: 40,
+      color: 'black',
+      fontSize: 20,
   },
   item: {
       padding: 20,
@@ -56,11 +82,9 @@ const styles = StyleSheet.create({
   modalContent: {
     height: '100%',
     width: '100%',
-    backgroundColor: '#25292e',
+    backgroundColor: '#969492',
     borderTopRightRadius: 18,
     borderTopLeftRadius: 18,
-    // position: 'absolute',
-    // bottom: 0,
   },
   titleContainer: {
     paddingTop: 20,
@@ -98,7 +122,9 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
     paddingBottom: 30,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    paddingTop: 20,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    alignContent: 'center',
   }
 });

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, StyleSheet, Button, Pressable, Text } from 'react-native';
+import { StyleSheet, Pressable, Text } from 'react-native';
 import { Audio } from 'expo-av';
 
 type Props = {
@@ -64,18 +64,3 @@ text: {
   color: 'black',
 },
 });
-
-  //   return (
-  //     <View style={styles.container}>
-  //       <Button color="#00796B" style={{ backgroundColor: 'yellow' }} title="Play Sound" onPress={playSound} />
-  //     </View>
-  //   );
-  // }
-  
-  // const styles = StyleSheet.create({
-  //   container: {
-  //     flex: 1 / 20,
-  //     justifyContent: 'center',
-  //     padding: 10,
-  //   },
-  // });

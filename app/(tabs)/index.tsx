@@ -2,11 +2,10 @@ import {
   Text,
   View,
   StyleSheet,
-  Platform,
   FlatList,
   TextInput } from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { GestureHandlerRootView } from "react-native-gesture-handler"
 import { StatusBar } from 'expo-status-bar';
 import Item from '@/components/Item';
@@ -28,7 +27,7 @@ export default function Index() {
       const data = await response.json();
       setData(data.recordings)
     } else {
-      const response = await fetch('https://xeno-canto.org/api/2/recordings?query=mystery');
+      const response = await fetch('https://xeno-canto.org/api/2/recordings?query=eagle');
       const data = await response.json();
       setData(data.recordings)
     }
@@ -41,17 +40,7 @@ export default function Index() {
 
   useEffect(() => {
     getBirdRecordings();
-  }, [page]);
-  
-  console.log(data)
-
-  const onReset = () => {
-    setShowAppOptions(false);
-  };
-
-  const onAddSticker = () => {
-    setIsModalVisible(true);
-  };
+  }, []);
 
   const handleSearch = (text) => {
     getBirdRecordings(text)
@@ -75,7 +64,7 @@ export default function Index() {
       />
     );
   };
-  
+
   if (isLoading) {
     return (
       <SafeAreaProvider>
@@ -84,7 +73,6 @@ export default function Index() {
         </ SafeAreaView>
       </ SafeAreaProvider>
   )}
-
 
 // TODO: CREATE VIEW FOR NO SEARCH RESULTS
   if (data.length === 0) {
@@ -117,26 +105,7 @@ export default function Index() {
                 onEndReachedThreshold={0.5}
               />
             </View>
-            {/* <View ref={imageRef} collapsable={false} >
-              <ImageViewer imgSource={PlaceholderImage} selectedImage={selectedImage} />
-              {pickedEmoji && <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />}
-            </View> */}
           </SafeAreaView>
-          {/* {showAppOptions ? (
-            <View style={styles.optionsContainer}>
-              <View style={styles.optionsRow}>
-                <IconButton icon="refresh" label="Reset" onPress={onReset} />
-                <CircleButton onPress={onAddSticker} />
-                <IconButton icon="save-alt" label="Save" onPress={onSaveImageAsync} />
-              </View>
-            </View>
-          ) : (
-            <View style={styles.footerContainer}>
-              <Button theme="primary" label="Choose a photo" onPress={pickImageAsync} />
-              <Button label="Use this photo" onPress={() => setShowAppOptions(true)} />
-            </View>
-          )}*/}
-          {/* <AdditionalBirdInfo isVisible={isModalVisible} onClose={onModalClose}> */}
         </SafeAreaProvider>
       </GestureHandlerRootView>
       <StatusBar style="dark" />
@@ -148,16 +117,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#25292e',
-    // justifyContent: 'center',
-    // alignItems: 'center',
     marginTop: StatusBar.currentHeight || 0,
     width: '100%',
   },
   loading: {
     flex: 1,
     backgroundColor: '#25292e',
-    // justifyContent: 'center',
-    // alignItems: 'center',
     marginTop: StatusBar.currentHeight || 0,
     width: '100%',
   },

@@ -2,9 +2,6 @@ import {
     Text,
     View,
     StyleSheet,
-    Platform,
-    FlatList,
-    SafeAreaView,
     Image,
     Pressable } from 'react-native';
 import { useState } from 'react';
@@ -58,10 +55,9 @@ type ItemProps = {
     setSelectedId: () => void;
 };
 
-export default function Item({item, setSelectedId, selectedId, backgroundColor }: ItemProps) {
+export default function Item({item, setSelectedId, backgroundColor }: ItemProps) {
 
     const [isExpanded, setIsExpanded] =useState(false)
-    const [showAppOptions, setShowAppOptions] = useState<boolean>(false)
 
     const handlePress = (item) => {
         setSelectedId(item.id)
@@ -76,12 +72,17 @@ export default function Item({item, setSelectedId, selectedId, backgroundColor }
             <Pressable onPress={() => handlePress(item)} style={[styles.item, {backgroundColor}]}>
                 <View>
                 <Text style={styles.title}>{`${item.en} - ${item.uploaded}`}</Text>
+                <Image style={styles.image}  src={item.sono.med}/>
                 </View>
                 {isExpanded && <AdditionalBirdInfo onClose={onModalClose} item={item} />}
             </Pressable>
 )};
 
 const styles = StyleSheet.create({
+    image: {
+        width: 150,
+        height: 150,
+    },
     title: {
         textAlign: 'left',
         color: 'black',
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     },
     item: {
         width: 350,
-        height: 300,
+        height: 100,
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,

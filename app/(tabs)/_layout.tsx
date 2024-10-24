@@ -28,11 +28,11 @@ export default function TabLayout() {
             }}
         />
     <Tabs.Screen
-        name="about"
+        name="saved"
         options={{
-        title: 'Profile',
+        title: 'Saved',
         tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={24}/>
+            <MaterialCommunityIcons name={focused ? 'heart' : 'heart-outline'} color={color} size={24}/>
         ),
         }}
     />
