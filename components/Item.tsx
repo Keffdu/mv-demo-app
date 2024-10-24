@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     },
     item: {
         width: 350,
-        height: 100,
+        height: 60,
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,

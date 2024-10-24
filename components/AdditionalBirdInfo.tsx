@@ -93,8 +93,6 @@ const styles = StyleSheet.create({
     height: '16%',
     width: "100%",
     backgroundColor: '#00796B',
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
     paddingHorizontal: 20,
     alignItems: 'flex-start',
     alignContent: 'center',
